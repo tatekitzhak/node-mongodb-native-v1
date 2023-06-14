@@ -1,0 +1,6 @@
+Amazon S3 examples using SDK for JavaScript V3
+----------------------------------------------
+https://docs.aws.amazon.com/sdk-for-javascript/v3/developer-guide/javascript_s3_code_examples.html
+https://developers.cloudflare.com/r2/examples/aws-sdk-js-v3/
+https://docs.aws.amazon.com/AWSJavaScriptSDK/v3/latest/clients/client-s3/index.html#promises
+https://docs.amazonaws.cn/en_us/sdk-for-javascript/v3/developer-guide/getting-started-nodejs.html
