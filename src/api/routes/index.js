@@ -4,7 +4,8 @@ const { getCategory } = require('../controllers/category');
 
 const { readFilesFromAWSS3 } = require('../controllers/aws');
 const { readWriteFiles } = require('../controllers/readWriteFiles');
-const { add } = require('../../db/queryOperation.js')
+const { Query, add } = require('../../db/queryOperation.js')
+const DbQuery = require('../../db/query.js');
 
 
 const Router = express.Router();
@@ -59,11 +60,24 @@ Router.route('/process-files')
 
 Router.route('/add-to-database')
     .get(middleware,
-        add, 
+        Query.add('contxt1', 'abc'),
         (req, res, next) => {
             res.json({ database: req.url })
-    
+
         });
+
+Router.route('/add-JSON-file-to-db')
+    .get(DbQuery.add, async (req, res) => {
+        try {
+            res.status(200).send({
+                message: `Congratulations! You made it. Your role is ${req.role}`
+            })
+        } catch (error) {
+            res.status(500).send({
+                error: 'Internal server error'
+            })
+        }
+    })
 
 module.exports = {
     Router

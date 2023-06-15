@@ -4,8 +4,8 @@ const path = require('path'),
 
 const { readingContentsOfDirectory } = require('./readContentsOfDirectory');
 
-const READABLE_RESOURCES = path.join(__dirname, '../../static/test_topics3/'),
-  NEW_WRITABLE_JSON_FILE = path.join(__dirname, '../../static/test_topics.json');
+const READABLE_RESOURCES = path.join(__dirname, '../../static/test_topics4/'),
+  NEW_WRITABLE_JSON_FILE = path.join(__dirname, '../../static/test_topics4.json');
 
 const readWriteFilesLocalDirectory = (cb) => {
 
@@ -17,6 +17,7 @@ const readWriteFilesLocalDirectory = (cb) => {
         throw new Error(error.message);
       }
     });
+    
     cb(content)
   }
   readingContentsOfDirectory(READABLE_RESOURCES, getContentOfArrayAndWriteFile);

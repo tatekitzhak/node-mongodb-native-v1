@@ -38,42 +38,22 @@ class Database {
       });
       
       this.client = await mongo.connect()
-      const db = this.client.db('contxt');
 
-      cb('this.db');
-      console.log('\x1b[36m', `${1}:`, '\x1b[0m', 'connections process...');
+      cb(this.name);
+      console.log('\x1b[36m', `${this.name}:`, '\x1b[0m', 'connected');
       
       return this.client;
 
     } catch (e) {
-      console.log('Error Type::',e.name); // Error Type: in this case just Error
+      console.log('\x1b[36m', `Error Type:`, '\x1b[0m',e.name); // Error Type: in this case just Error
 
-      console.log(' Error Message:',e.message); // Error Message: The string we’ve passed as an argument to the error constructor in the try block
+      console.log('\x1b[36m', ' Error Message:', '\x1b[0m',e.message); // Error Message: The string we’ve passed as an argument to the error constructor in the try block
 
-      console.log('Error Stack: ',e.stack)
+      console.log( '\x1b[36m', 'Error Stack: ', '\x1b[0m' ,e.stack)
       // onFailure(ex);
       cb(e);
     }
 
-  }
-
-  async connect3(){
-
-    try {
-      var client = await this.mongo.connect();
-
-      const db = client.db('contxt');
-      console.log("MongoClient Connection successfull:", this);
-      // onSuccess()
-      return db;
-    } catch (error) {
-      console.log('Error Type::',e.name); // Error Type: in this case just Error
-
-      console.log(' Error Message:',e.message); // Error Message: The string we’ve passed as an argument to the error constructor in the try block
-
-      console.log('Error Stack: ',e.stack)
-      // onFailure(ex);
-    }
   }
 
   async close() {
