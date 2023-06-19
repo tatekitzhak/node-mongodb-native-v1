@@ -42,10 +42,12 @@ const PORT = env.NODE_PORT,
 			// server.close(9999)
 			// process.exit(1234)
 		});
+		
 		process.on('exit', code => {
 			// Only synchronous calls
 			console.log(`process.on('exit') code: ${code}`)
-		})
+		});
+		
 		app.on('close', (args) => {
 	
 			// RedisService.disconnect();
