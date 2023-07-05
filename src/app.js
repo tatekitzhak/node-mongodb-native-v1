@@ -4,7 +4,7 @@ const express = require('express');
 const { env } = require('./configs/env');
 const app = express()
 
-const { registerMiddlewareServices, parser } = require('./api/middlewares/index');
+const { MIDDLEWARES, parser, headers } = require('./api/middlewares/index');
 
 const PORT = env.NODE_PORT,
 	HOST = env.HOST;
@@ -19,14 +19,15 @@ const PORT = env.NODE_PORT,
 		// RedisService.connect();
 
 		// Init express server app
-		app.use(registerMiddlewareServices);
-		app.use(parser.bodyParserUrlencoded);
-		app.use(parser.bodyParserJson);
-		app.use(parser.bodyParserRaw);
+		app.use(express.json());
+		await app.use(MIDDLEWARES);
+		await app.use(parser.bodyParserUrlencoded);
+		await app.use(parser.bodyParserJson);
+		await app.use(parser.bodyParserRaw);
+		await app.use(headers);
 
 		// Initializes the app APIs
-		await require('./api/index')(app, env.NODE_ENV);
-
+		await require('./api/index')(app, env.ENV);
 
 		// Start server
 		await app.listen(PORT, HOST, () => {
@@ -62,4 +63,4 @@ const PORT = env.NODE_PORT,
 	finally {
 		console.log('finally: app.js  ', args)
 	}
-})([{ port: env.NODE_PORT }, { env: env.NODE_ENV }]);
+})([{ port: env.NODE_PORT }, { env: env.ENV }]);

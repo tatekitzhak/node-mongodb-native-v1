@@ -174,7 +174,7 @@ const add = (collName) => {
             next(e, req, res, next);
         }
 
-        next()
+        
     }
 }
 
