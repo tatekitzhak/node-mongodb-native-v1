@@ -1,6 +1,3 @@
-const fs = require('fs');
-
-
 // Environment variables 
 module.exports.env = {
 	REDIS_URL: process.env.REDIS_URL,
@@ -19,11 +16,7 @@ module.exports.env = {
         user: process.env.DB_USER,
         password: process.env.DB_PASSWORD,
         database: process.env.DB_NAME || 'REPLACE_WITH_YOUR_DB_NAME',
-        port: process.env.DB_PORT || 3306,
-        ssl: {
-          mode: 'VERIFY_IDENTITY',
-          ca: fs.readFileSync('/etc/ssl/cert.pem', 'utf-8'),
-        }
+        port: process.env.DB_PORT || 3306
     },
     nodeEnv: {
         DEV: 'development',
