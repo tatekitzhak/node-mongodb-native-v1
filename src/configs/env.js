@@ -2,7 +2,7 @@
 module.exports.env = {
 	REDIS_URL: process.env.REDIS_URL,
 	ENV: process.env.ENV || 'development',
-    NODE_PORT: parseInt(process.env.PORT ) || 8001,
+    NODE_PORT: parseInt(process.env.PORT ) || 8000,
     HOST: process.env.HOST || 'localhost',
     DOMAIN: process.env.DOMAIN,
     aws:{

@@ -11,7 +11,7 @@ const PORT = env.NODE_PORT,
 // import { RedisService } from './services/redis';
 
 // Startup
-(async function main(args) {
+async function main(args) {
 
 	try {
 
@@ -19,19 +19,18 @@ const PORT = env.NODE_PORT,
 		// RedisService.connect();
 
 		// Init express server app
-		app.use(express.json());
+		await app.use(express.json());
 		await app.use(MIDDLEWARES);
 		await app.use(parser.bodyParserUrlencoded);
 		await app.use(parser.bodyParserJson);
 		await app.use(parser.bodyParserRaw);
 		await app.use(headers);
-
-		// Initializes the app APIs
-		await require('./api/index')(app, env.ENV);
-
 		// Start server
-		await app.listen(PORT, HOST, () => {
-			console.log(`Node server is listening on: \x1b[36m http://${env.HOST}:${env.NODE_PORT}\x1b[0m`);
+		await app.listen(PORT, HOST, async () => {
+			// Initializes the app APIs
+			require('./api/index')(app, env.ENV);
+
+			console.log(`Node server is listening on: \x1b[36m http://${HOST}:${PORT}\x1b[0m`);
 			// logger.info(`node server is listening on port ${env.NODE_PORT} in ${env.NODE_ENV} mode`);
 			// server.close(9999)
 			// process.exit(1234)
@@ -43,14 +42,14 @@ const PORT = env.NODE_PORT,
 			// server.close(9999)
 			// process.exit(1234)
 		});
-		
+
 		process.on('exit', code => {
 			// Only synchronous calls
 			console.log(`process.on('exit') code: ${code}`)
 		});
-		
+
 		app.on('close', (args) => {
-	
+
 			// RedisService.disconnect();
 			// logger.info('node server closed');
 			console.log(`Node server.on('close'): ${args}`)
@@ -59,8 +58,9 @@ const PORT = env.NODE_PORT,
 	} catch (error) {
 		// logger.error(err.stack);
 		console.log('main error:\n', error)
-	}
-	finally {
+	} finally {
 		console.log('finally: app.js  ', args)
 	}
-})([{ port: env.NODE_PORT }, { env: env.ENV }]);
+};
+
+main('')
