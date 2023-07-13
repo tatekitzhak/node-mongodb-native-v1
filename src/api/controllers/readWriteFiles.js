@@ -1,7 +1,10 @@
 'use strict'; // eslint-disable-line strict
+var path = require('path');
 
+const DIR = path.dirname(__filename)
+console.log('DIR:', DIR)
 const { readWriteFilesLocalDirectory } = require('../../services/read_write_files_local_directory');
-const DatabaseQuery = require('../../db/query.js');
+const dbQuery = require('../../db/query.js');
 
 const readWriteFiles = (req, res, next) => {
     
@@ -12,7 +15,7 @@ const readWriteFiles = (req, res, next) => {
             throw new Error('Missing categories data');
         }
 
-        await DatabaseQuery.add('contxt','abc',content)
+        // await dbQuery.add('contxt','abc',content)
 
         if (content.length) {
             res.status(200).json(content);

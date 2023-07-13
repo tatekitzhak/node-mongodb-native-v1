@@ -1,6 +1,6 @@
 const { ReadWriteFilesRouter, ReadWriteToAWSS3BucketsRouter, Router } = require('./routes/index');
 const { getCategory } = require('./controllers/category.js');
-
+const dbQuery = require('../db/query.js');
 
 module.exports = function (app, args) {
 	console.log('Environment:', args)
@@ -11,6 +11,7 @@ module.exports = function (app, args) {
      * All the API will start with "/api/[MODULE_ROUTE]"
      */
 	const setHomePageInfo = (req, res, next, visitor) => {
+		
 		console.log(req.headers.host, visitor)
 		req.requestInfo = visitor;
 		next();
@@ -19,17 +20,18 @@ module.exports = function (app, args) {
 
 	// The Home page
 	app.get('/', function (req, res, next) {
-		setHomePageInfo(req, res, next, 'admin')
+		setHomePageInfo(req, res, next, 'Home page')
 	},
-		(req, res, next) => {
+		async (req, res, next) => {
 
+			const data = await dbQuery.read()
 			const req_info = [{
 				"headers": req.headers,
 				search_query: req.url,
 				middleware_info: req.requestInfo,
-				args: args
+				data: data
 			}];
-
+			
 			res.status(200)
 				.set({ 'status': 'OK' })
 				.json(req_info);

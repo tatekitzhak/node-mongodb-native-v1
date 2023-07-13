@@ -12,7 +12,7 @@ const Router = express.Router();
 
 const middleware = (text) => {
     return (req, res, next) => {
-        console.log(req.headers.host)
+        console.log('middleware:',req.headers.host)
         req.requestInfo = text;
         next();
     };
@@ -24,6 +24,21 @@ const hasRole = (req, res, next, role) => {
 
     next();
 };
+
+Router.route('/')
+    .get(function (req, res, next) {
+        hasRole(req, res, next, 'admin');
+    },
+        (req, res, next) => {
+            var url = req.protocol + '://' + req.get('host') + req.originalUrl;
+
+            const parse_url = new URL(url)
+            res.status(200).set({ 'status': 'OK' });
+            res.json([{
+                parse_url: parse_url,
+                middlewareInfo: req.requestInfo
+            }]);
+        });
 
 // Read and Requests Data
 Router.route('/category')
@@ -165,7 +180,7 @@ Router.route('/topics/:arg/user')
 //     ).post();
 
 Router.route('/process-files')
-    .get(middleware, readWriteFiles)
+    .get(middleware('abc'), readWriteFiles)
 
 Router.route('/add-to-database')
     .get(middleware,

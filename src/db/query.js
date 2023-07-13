@@ -10,7 +10,7 @@ class DatabaseQuery {
     Authenticate = async (doc) => {
         try {
 
-            console.log('Authenticate:', this.properties)
+            console.log('Authenticate:', this.properties, doc)
             return
         } catch (error) {
             console.log("Unable to parse the request:", error)
@@ -31,16 +31,49 @@ class DatabaseQuery {
         this.Authenticate(req, res, next, "customer");
     };
 
-    Agent = (req, res, next) => {
-        this.Authenticate(req, res, next, "agent");
-    };
-
     Admin = (req, res, next) => {
         this.Authenticate(req, res, next, "admin");
     };
 
     update = (req, res, next) => {
         this.Authenticate(req, res, next, "admin");
+    };
+
+    read = async (req, res, next) => {
+
+        try {
+
+            const client = await mongoCli.connect(function (db) {
+                console.log('Find query:')
+            });
+
+            const db = await client.db('contxt')
+            var adminDb = await db.admin();
+            const status = await adminDb.serverStatus();
+            // console.log('adminDb.serverStatus():', status.connections)
+
+            const collectionIsValid = await this.validateCollection(adminDb, 'abc');
+
+            // console.log('collectionIsValid:', collectionIsValid.valid)
+
+            try {
+                
+                var cursor = await db.collection('abc').find().toArray();
+
+                return cursor;
+
+            } catch (e) {
+
+                console.log(`read:`, e);
+
+                return;
+            }
+
+        } catch (error) {
+            console.log("Unable to validateCollection:", error)
+            return
+        }
+
     };
 
     add = async (dbName, collName, doc) => {
@@ -110,7 +143,7 @@ class DatabaseQuery {
 
                     const insertOneResult = await db.collection(collName).insertOne(category);
                     let category_id = insertOneResult.insertedId;
-                    console.log(`Inserted a document with id ${new ObjectId(category_id)}` );
+                    console.log(`Inserted a document with id ${new ObjectId(category_id)}`);
 
                 });
 

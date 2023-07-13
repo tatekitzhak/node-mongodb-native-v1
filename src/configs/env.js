@@ -6,9 +6,9 @@ module.exports.env = {
     HOST: process.env.HOST || 'localhost',
     DOMAIN: process.env.DOMAIN,
     aws:{
-        ACCESS_KEY_ID: 'AKIA5UPHWDV2PZZMDYXQ',
-        SECRET_ACCESS_KEY: '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',
-        REGION: 'us-east-2'
+        ACCESS_KEY_ID: false,
+        SECRET_ACCESS_KEY: false,
+        REGION: false
     },
     db: {
         host: process.env.DB_HOST,
