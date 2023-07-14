@@ -33,11 +33,13 @@ Router.route('/')
             var url = req.protocol + '://' + req.get('host') + req.originalUrl;
 
             const parse_url = new URL(url)
+
             res.status(200).set({ 'status': 'OK' });
             res.json([{
                 parse_url: parse_url,
                 middlewareInfo: req.requestInfo
             }]);
+            
         });
 
 // Read and Requests Data

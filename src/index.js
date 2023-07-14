@@ -28,7 +28,7 @@ async function main(args) {
 		// Start server
 		await app.listen(PORT, async () => {
 			// Initializes the app APIs
-			require('./api/index')(app, env.ENV);
+			await require('./api/index')(app, env.ENV);
 
 			console.log(`Node server is listening on: \x1b[36m http://${HOST}:${PORT}\x1b[0m`);
 			// logger.info(`node server is listening on port ${env.NODE_PORT} in ${env.NODE_ENV} mode`);
@@ -36,19 +36,19 @@ async function main(args) {
 			// process.exit(1234)
 		});
 
-		app.on('listening', () => {
+		await app.on('listening', () => {
 			console.log(`Node server.on('listening'): `);
 			// logger.info(`node server is listening on port ${env.NODE_PORT} in ${env.NODE_ENV} mode`);
 			// server.close(9999)
 			// process.exit(1234)
 		});
 
-		process.on('exit', code => {
+		await process.on('exit', code => {
 			// Only synchronous calls
 			console.log(`process.on('exit') code: ${code}`)
 		});
 
-		app.on('close', (args) => {
+		await app.on('close', (args) => {
 
 			// RedisService.disconnect();
 			// logger.info('node server closed');

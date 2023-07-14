@@ -47,18 +47,18 @@ class DatabaseQuery {
                 console.log('Find query:')
             });
 
-            const db = await client.db('contxt')
+            const db = await client.db('convertxt')
             var adminDb = await db.admin();
             const status = await adminDb.serverStatus();
             // console.log('adminDb.serverStatus():', status.connections)
 
-            const collectionIsValid = await this.validateCollection(adminDb, 'abc');
+            const collectionIsValid = await this.validateCollection(adminDb, 'category');
 
             // console.log('collectionIsValid:', collectionIsValid.valid)
 
             try {
                 
-                var cursor = await db.collection('abc').find().toArray();
+                var cursor = await db.collection('category').find().toArray();
 
                 return cursor;
 

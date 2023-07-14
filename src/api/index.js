@@ -11,7 +11,7 @@ module.exports = function (app, args) {
      * All the API will start with "/api/[MODULE_ROUTE]"
      */
 	const setHomePageInfo = (req, res, next, visitor) => {
-		
+
 		console.log(req.headers.host, visitor)
 		req.requestInfo = visitor;
 		next();
@@ -31,12 +31,13 @@ module.exports = function (app, args) {
 				middleware_info: req.requestInfo,
 				data: data
 			}];
-			
+
 			res.status(200)
 				.set({ 'status': 'OK' })
 				.json(req_info);
 
-		});
+		}
+	);
 
 	app.use('/api', Router);
 

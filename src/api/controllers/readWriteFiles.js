@@ -15,7 +15,7 @@ const readWriteFiles = (req, res, next) => {
             throw new Error('Missing categories data');
         }
 
-        // await dbQuery.add('contxt','abc',content)
+        await dbQuery.add('convertxt','category',content)
 
         if (content.length) {
             res.status(200).json(content);
