@@ -8,9 +8,9 @@ npm-debug.log*
 
 # dotenv environment variables file
 
-# /src/configs/*
-# .env
-# .env*
+/src/configs/*
+.env
+.env*
 
 .cache/
 **/.cache/

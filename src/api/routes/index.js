@@ -2,7 +2,7 @@
 const express = require('express');
 var url = require('url');
 const { getCategory } = require('../controllers/category');
-const { readFilesFromAWSS3 } = require('../controllers/aws');
+// const { readFilesFromAWSS3 } = require('../controllers/aws');
 const { readWriteFiles } = require('../controllers/readWriteFiles');
 const { Query, add } = require('../../db/queryOperation.js')
 const DbQuery = require('../../db/query.js');
@@ -39,7 +39,7 @@ Router.route('/')
                 parse_url: parse_url,
                 middlewareInfo: req.requestInfo
             }]);
-            
+
         });
 
 // Read and Requests Data
@@ -182,7 +182,13 @@ Router.route('/topics/:arg/user')
 //     ).post();
 
 Router.route('/process-files')
-    .get(middleware('abc'), readWriteFiles)
+    .get(middleware('abc'), readWriteFiles('Hello readWriteFiles'))
+    .post((req, res) => {
+        let data = req.body;
+        console.log(data)
+        // res.json(req.body)
+        res.send('Data Received: ' + JSON.stringify(data));
+    })
 
 Router.route('/add-to-database')
     .get(middleware,

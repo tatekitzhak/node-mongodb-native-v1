@@ -1,30 +1,45 @@
 'use strict'; // eslint-disable-line strict
 var path = require('path');
+const url = require('url');
+const querystring = require('querystring');
 
 const DIR = path.dirname(__filename)
-console.log('DIR:', DIR)
+
 const { readWriteFilesLocalDirectory } = require('../../services/read_write_files_local_directory');
 const dbQuery = require('../../db/query.js');
 
-const readWriteFiles = (req, res, next) => {
-    
+const readWriteFiles = (args) => {
 
-    async function getContent(content) {
-        if (!content.length) {
-            console.log('Missing categories data')
-            throw new Error('Missing categories data');
-        }
+    return async (req, res, next) => {
 
-        await dbQuery.add('convertxt','category',content)
+        const url_path = `${req.protocol}://${req.get('host')}${req.originalUrl}`;
 
-        if (content.length) {
-            res.status(200).json(content);
-        } else {
-            res.status(400).json('Empty');
-        }
+        const parse_url_path = url.parse(url_path);
         
+        let parsedQs = querystring.parse(parse_url_path.query);
+        
+        async function getContent(content) {
+
+            if (!content.length) {
+                console.log('Missing categories data')
+                throw new Error('Missing categories data');
+            }
+
+            await dbQuery.add(parsedQs.db, parsedQs.coll, content)
+
+            if (content.length) {
+                res.status(200).json([ [ parsedQs ], content ]);
+            } else {
+                res.status(400).json('Empty');
+            }
+
+        }
+        await readWriteFilesLocalDirectory(parsedQs.folder, parsedQs.output, getContent)
+
     }
-    readWriteFilesLocalDirectory(getContent)  
+
+
+
 };
 
 module.exports = { readWriteFiles };

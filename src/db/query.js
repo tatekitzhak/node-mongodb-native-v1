@@ -57,7 +57,7 @@ class DatabaseQuery {
             // console.log('collectionIsValid:', collectionIsValid.valid)
 
             try {
-                
+
                 var cursor = await db.collection('category').find().toArray();
 
                 return cursor;
@@ -79,16 +79,6 @@ class DatabaseQuery {
     add = async (dbName, collName, doc) => {
 
         try {
-            let date_ob = new Date();
-            let date = ("0" + date_ob.getDate()).slice(-2),
-                month = ("0" + (date_ob.getMonth() + 1)).slice(-2),
-                year = date_ob.getFullYear(),
-                hours = date_ob.getHours(),
-                minutes = date_ob.getMinutes(),
-                seconds = date_ob.getSeconds();
-
-
-            let dateFormat = year + "-" + month + "-" + date + " " + hours + ":" + minutes + ":" + seconds;
 
             const client = await mongoCli.connect(function (db) {
                 console.log('Find query:')
@@ -105,6 +95,16 @@ class DatabaseQuery {
 
             try {
 
+                let date_ob = new Date();
+                let date = ("0" + date_ob.getDate()).slice(-2),
+                    month = ("0" + (date_ob.getMonth() + 1)).slice(-2),
+                    year = date_ob.getFullYear(),
+                    hours = date_ob.getHours(),
+                    minutes = date_ob.getMinutes(),
+                    seconds = date_ob.getSeconds();
+
+
+                let dateFormat = year + "-" + month + "-" + date + " " + hours + ":" + minutes + ":" + seconds;
 
                 await doc.forEach(async function (element, index, array) {
                     const subcategory_ref = [];
