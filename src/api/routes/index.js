@@ -182,7 +182,7 @@ Router.route('/topics/:arg/user')
 //     ).post();
 
 Router.route('/process-files')
-    .get(middleware('abc'), readWriteFiles('Hello readWriteFiles'))
+    .get(middleware('Build a datatbase with process-files'), readWriteFiles('Build a datatbase, and category and subcategory collections'))
     .post((req, res) => {
         let data = req.body;
         console.log(data)
