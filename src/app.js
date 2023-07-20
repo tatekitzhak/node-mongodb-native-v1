@@ -11,7 +11,7 @@ const PORT = env.NODE_PORT,
 // import { RedisService } from './services/redis';
 
 // Startup
-async function main(args) {
+(async function main(args) {
 
 	try {
 
@@ -61,6 +61,4 @@ async function main(args) {
 	} finally {
 		console.log('finally: app.js  ', args)
 	}
-};
-
-main('')
+})([{ port: '' }, { host: '' }]);

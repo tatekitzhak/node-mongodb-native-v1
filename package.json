@@ -5,6 +5,7 @@
   "main": "index.js",
   "scripts": {
     "prod": "ENV=production node index.js",
+    "stage": "ENV=stage node index.js",
     "dev": "nodemon index.js"
   },
   "keywords": [],
