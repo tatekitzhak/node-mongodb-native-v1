@@ -35,20 +35,6 @@ module.exports.env = {
         index: 'app/dist/index.html',
         indexDev: 'app/index.html',
         indexTmp: '.tmp/html/index.html'
-    },
-	SMTP: {
-		auth: {
-			pass: process.env.SMTP_PASSWORD || '',
-			user: process.env.SMTP_USERNAME || ''
-		},
-		host: process.env.SMTP_HOST || '',
-		port: process.env.SMTP_PORT || '',
-		tls: {
-			rejectUnauthorized: false
-		}
-    },
-    mails: {
-        support: 'support@my-company.com'
     }
 };
 
