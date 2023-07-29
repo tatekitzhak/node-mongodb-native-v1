@@ -115,7 +115,7 @@ class DatabaseQuery {
                         // console.log(`subcategory: ${key}`)
                         console.log(`category ${index} : ${element.category}`);
                         const subcategory = {
-                            name: key,
+                            title: key,
                             description: '',
                             topic_ref_ids: [],
                             tags: [],
@@ -133,7 +133,7 @@ class DatabaseQuery {
                     }
                     // Insert to category
                     const category = {
-                        name: element.category,
+                        title: element.category,
                         description: '',
                         tags: [],
                         subcategory_ref_ids: subcategory_ref,

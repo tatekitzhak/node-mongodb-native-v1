@@ -6,13 +6,14 @@ const { getCategory } = require('../controllers/category');
 const { readWriteFiles } = require('../controllers/readWriteFiles');
 const { Query, add } = require('../../db/queryOperation.js')
 const DbQuery = require('../../db/query.js');
+const subcategoryController = require('../controllers/findSubcategory');
 
 
 const Router = express.Router();
 
 const middleware = (text) => {
     return (req, res, next) => {
-        console.log('middleware:',req.headers.host)
+        console.log('middleware:', req.headers.host)
         req.requestInfo = text;
         next();
     };
@@ -20,8 +21,9 @@ const middleware = (text) => {
 
 const hasRole = (req, res, next, role) => {
     var url = req.protocol + '://' + req.get('host') + req.originalUrl;
-    console.log('hasRole:', url)
-
+    console.log('Role:', role)
+    console.log('URI:', url)
+    req.requestInfo = url;
     next();
 };
 
@@ -47,16 +49,19 @@ Router.route('/category')
     .get(middleware('text'), getCategory);
 
 Router.route('/category/:subcategory')
-    .get(function (req, res, next) {
-        hasRole(req, res, next, 'admin');
-    },
+    .get(
+        function (req, res, next) {
+            hasRole(req, res, next, 'admin');
+        },
+        subcategoryController.findSubcategory('admin'),
         (req, res, next) => {
             var url = req.protocol + '://' + req.get('host') + req.originalUrl;
 
             const parse_url = new URL(url)
             res.json([{
                 parse_url: parse_url,
-                middlewareInfo: req.requestInfo
+                middlewareInfo: req.requestInfo,
+                req_request_data: req.request_data
             }]);
         });
 
@@ -66,7 +71,7 @@ Router.route('/category/:subcategory/:topics')
         var full_url = req.protocol + '://' + req.get('host') + req.originalUrl;
 
         const parse_url = new URL(full_url)
-        const { href,origin,protocol,username,password,host,hostname,port,pathname,search,searchParams,hash } = parse_url;
+        const { href, origin, protocol, username, password, host, hostname, port, pathname, search, searchParams, hash } = parse_url;
 
         //Print the url object.
         const urlObject = {
