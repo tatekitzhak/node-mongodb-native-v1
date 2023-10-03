@@ -39,7 +39,7 @@ class DatabaseQuery {
         this.Authenticate(req, res, next, "admin");
     };
 
-    read = async (req, res, next) => {
+    read = async (category_id, subcategory_id) => {
 
         try {
 

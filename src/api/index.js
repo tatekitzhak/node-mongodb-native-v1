@@ -18,23 +18,23 @@ module.exports = function (app, args) {
 	};
 
 
-	// The Home page
+	// The Home page request
 	app.get('/', function (req, res, next) {
 		setHomePageInfo(req, res, next, 'Home page')
 	},
 		async (req, res, next) => {
 
 			const data = await dbQuery.read()
-			const req_info = [{
+			const home_page_req = [{
 				"headers": req.headers,
 				search_query: req.url,
-				middleware_info: req.requestInfo,
+				mw_info: req.requestInfo,
 				data: data
 			}];
 
 			res.status(200)
 				.set({ 'status': 'OK' })
-				.json(req_info);
+				.json(home_page_req);
 
 		}
 	);

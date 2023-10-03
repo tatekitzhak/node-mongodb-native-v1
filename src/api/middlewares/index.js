@@ -33,9 +33,9 @@ const parser = {
 }
 
 const headers = (req, res, next) => {
-	const origin = (req.headers.host == 'localhost:8002') ? `http://localhost:${env.NODE_PORT}` : 'http://convertotext.com'
+	const origin = (req.headers.host == 'localhost:8002') ? `http://localhost:${env.NODE_PORT}` : 'http://localhost:3000'
 	res.setHeader('Access-Control-Allow-Origin', origin)
-		.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE')
+		.setHeader('Access-Control-Allow-Methods', 'GET')
 		.header('Access-Control-Allow-Headers', 'Content-Type, X-Requested-With, Origin')
 		.setHeader('Access-Control-Allow-Credentials', true);
 	next()

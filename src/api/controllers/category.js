@@ -1,4 +1,4 @@
-const { find, aggregateFromCategory } = require('../../services/crud_operations/queryOperation.js')
+const { aggregateFromCategory } = require('../../db/crud_operations/queryOperation.js')
 
 const getCategory = async (req, res, next) => {
 
@@ -10,9 +10,9 @@ const getCategory = async (req, res, next) => {
         if (category.length) {
             res.status(200).set({ 'status': 'OK' });
             res.set({ 'Content-Type': 'application/json' });
-            res.json(category)
+            res.json({ categories: category })
         } else {
-            res.status(400).json({ topics: req.url })
+            res.status(400).json({ categories: req.url })
         }
 
 

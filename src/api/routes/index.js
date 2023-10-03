@@ -6,7 +6,7 @@ const { getCategory } = require('../controllers/category');
 const { readWriteFiles } = require('../controllers/readWriteFiles');
 const { Query, add } = require('../../db/queryOperation.js')
 const DbQuery = require('../../db/query.js');
-const subcategoryController = require('../controllers/findSubcategory');
+const subcategoryController = require('../controllers/getTopics');
 
 
 const Router = express.Router();
@@ -19,17 +19,22 @@ const middleware = (text) => {
     };
 };
 
-const hasRole = (req, res, next, role) => {
+const clientInfoHandlerMiddleware = (req, res, next, msg) => {
     var url = req.protocol + '://' + req.get('host') + req.originalUrl;
-    console.log('Role:', role)
-    console.log('URI:', url)
+    const client_info = {
+        ...req.headers,
+        url: url,
+        message: msg
+    }
+    console.log('clientInfoHandlerMiddleware:', client_info)
+    
     req.requestInfo = url;
     next();
 };
 
 Router.route('/')
     .get(function (req, res, next) {
-        hasRole(req, res, next, 'admin');
+        clientInfoHandlerMiddleware(req, res, next, 'admin');
     },
         (req, res, next) => {
             var url = req.protocol + '://' + req.get('host') + req.originalUrl;
@@ -44,27 +49,36 @@ Router.route('/')
 
         });
 
-// Read and Requests Data
+// Get category and Subcategory
 Router.route('/category')
     .get(middleware('text'), getCategory);
 
-Router.route('/category/:subcategory')
+// Get topics by category id and subcategory id
+Router.route('/category/topics')
     .get(
         function (req, res, next) {
-            hasRole(req, res, next, 'admin');
+            clientInfoHandlerMiddleware(req, res, next, 'Get topics by category_id and subcategory_id');
         },
-        subcategoryController.findSubcategory('admin'),
+        subcategoryController.findTopicsBySubcategoryId('Get topics by category_id and subcategory_id'),
         (req, res, next) => {
-            var url = req.protocol + '://' + req.get('host') + req.originalUrl;
-
-            const parse_url = new URL(url)
-            res.json([{
-                parse_url: parse_url,
-                middlewareInfo: req.requestInfo,
-                req_request_data: req.request_data
-            }]);
+            
+            
+            // Response to client
+            
+            if ( Object.keys(req.request_data).length === 0 ) {
+                res.status(300).json([{ 'NO CONTENT': 'empty object'}]);
+            } else {
+                res.json([{
+                    middlewareInfo: req.requestInfo,
+                    request_info: req.request_data,
+                    client_info: req.headers
+                }]);
+            }
+            
         });
 
+
+// Get Article
 Router.route('/category/:subcategory/:topics')
     .get((req, res, next) => {
 
